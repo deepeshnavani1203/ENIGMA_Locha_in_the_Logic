@@ -457,7 +457,7 @@ const setupAdmin = async (req, res) => {
         const existingAdmin = await User.findOne({ 
             $or: [
                 { role: 'admin' },
-                { email: 'acadify.online@gmail.com' }
+                { email: 'admin@gmail.com' }
             ]
         });
         if (existingAdmin) {
@@ -473,7 +473,7 @@ const setupAdmin = async (req, res) => {
         // Create admin user
         const adminUser = new User({
             fullName: 'Admin User',
-            email: 'acadify.online@gmail.com',
+            email: 'admin@gmail.com',
             password: hashedPassword,
             phoneNumber: '123-456-7890',
             role: 'admin',
@@ -504,6 +504,5 @@ const setupAdmin = async (req, res) => {
         });
     }
 };
-
 module.exports = AuthController;
 module.exports.setupAdmin = setupAdmin;
