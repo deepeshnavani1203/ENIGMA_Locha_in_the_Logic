@@ -9,10 +9,10 @@ const Company = require('../models/Company');
 const { createErrorResponse, createSuccessResponse } = require('../utils/errorHandler');
 
 // Initialize Razorpay with dummy credentials for testing
-// const razorpay = new Razorpay({
-//     key_id: process.env.RAZORPAY_KEY_ID
-//     key_secret: process.env.RAZORPAY_KEY_SECRET 
-// });
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_RJoeNIkXQdxzq8',
+    key_secret: process.env.RAZORPAY_KEY_SECRET || 'TyJ0OJR0UMHBbsAVFsHbcduC'
+});
 
 class PaymentController {
     // Create payment order
@@ -139,16 +139,19 @@ class PaymentController {
                 donation.receiptUrl = receiptUrl;
                 await donation.save();
 
-                return createSuccessResponse(res, 200, {
-                    message: "Payment verified successfully",
-                    donation: {
-                        id: donation._id,
-                        amount: donation.amount,
-                        status: donation.status,
-                        receiptUrl: donation.receiptUrl,
-                        campaignName: donation.campaignId.campaignName
-                    }
-                });
+return createSuccessResponse(res, 200, {
+  message: "Payment verified successfully",
+  data: {
+    donation: {
+      id: donation._id,
+      amount: donation.amount,
+      status: donation.status,
+      receiptUrl: donation.receiptUrl,
+      campaignName: donation.campaignId.campaignName
+    }
+  }
+});
+
 
             } else {
                 // Payment verification failed

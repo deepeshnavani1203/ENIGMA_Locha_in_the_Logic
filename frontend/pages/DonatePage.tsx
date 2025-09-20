@@ -76,87 +76,93 @@ const DonatePage: React.FC = () => {
     setDonorInfo({ ...donorInfo, [e.target.name]: e.target.value });
   };
 
-  const handleDonationSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+ // In your DonatePage component, update the handler function:
 
-    try {
-      const orderPayload = {
-        campaignId:
-          selectedCampaignId === "general" ? null : selectedCampaignId,
-        amount,
-        donorName: user?.name || donorInfo.name,
-        donorEmail: user?.email || donorInfo.email,
-        donorPhone: user?.phoneNumber || donorInfo.phone,
-        paymentMethod: "razorpay",
-      };
+const handleDonationSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
 
-      const orderData = await paymentAPI.createOrder(orderPayload);
+  try {
+    const orderPayload = {
+      campaignId: selectedCampaignId === "general" ? null : selectedCampaignId,
+      amount,
+      donorName: user?.name || donorInfo.name,
+      donorEmail: user?.email || donorInfo.email,
+      donorPhone: user?.phoneNumber || donorInfo.phone,
+      paymentMethod: "razorpay",
+    };
 
-      if (orderData && orderData.success) {
-        const rzpOptions = {
-          key: "rzp_test_1DP5mmOlF5G5ag", // Dummy Razorpay Key ID for testing
-          amount: orderData.data.order.amount,
-          currency: orderData.data.order.currency,
-          name: "Sahayak",
-          description: `Donation for ${
-            orderData.data.campaign.name || "General Fund"
-          }`,
-          order_id: orderData.data.order.id,
-          handler: async (response: any) => {
-            try {
-              const verificationData = {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                donationId: orderData.data.donation.id,
-              };
-              const verificationResult = await paymentAPI.verifyPayment(
-                verificationData
-              );
-              if (verificationResult.success) {
-                addToast("Payment completed successfully!", "success");
-                setDonationSuccess(true);
-                if (!user && donorInfo.email) {
-                  addToast(
-                    `Donation successful! A donor account has been created with email: ${donorInfo.email} and password: Pass123`,
-                    "success"
-                  );
-                }
-              } else {
-                throw new Error(
-                  verificationResult.message || "Payment verification failed."
+    const orderData = await paymentAPI.createOrder(orderPayload);
+    
+    // Add debugging to see the actual structure
+    console.log("Order data structure:", orderData);
+
+    if (orderData && orderData.success) {
+      const rzpOptions = {
+        key: "rzp_test_RJoeNIkXQdxzq8",
+        amount: orderData.order.amount,
+        currency: orderData.order.currency,
+        order_id: orderData.order.id,
+        description: `Donation for ${orderData.campaign?.name || "General Fund"}`,
+        name: "Sahayak",
+        handler: async (response: any) => {
+          try {
+            const verificationData = {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              // Fix: Access donation id correctly based on your backend response
+              donationId: orderData.donation?.id || orderData.donation?._id,
+            };
+            
+            console.log("Verification data:", verificationData);
+            
+            const verificationResult = await paymentAPI.verifyPayment(verificationData);
+            
+            if (verificationResult.success) {
+              addToast("Payment completed successfully!", "success");
+              setDonationSuccess(true);
+              if (!user && donorInfo.email) {
+                addToast(
+                  `Donation successful! A donor account has been created with email: ${donorInfo.email} and password: Pass123`,
+                  "success"
                 );
               }
-            } catch (verifyError: any) {
-              addToast(verifyError.message, "error");
+            } else {
+              throw new Error(verificationResult.message || "Payment verification failed.");
             }
+          } catch (verifyError: any) {
+            console.error("Verification error:", verifyError);
+            addToast(verifyError.message, "error");
+          }
+        },
+        prefill: {
+          name: user?.name || donorInfo.name,
+          email: user?.email || donorInfo.email,
+          contact: user?.phoneNumber || donorInfo.phone,
+        },
+        theme: {
+          color: "#003f5c",
+        },
+        modal: {
+          ondismiss: () => {
+            addToast("Payment cancelled.", "info");
           },
-          prefill: {
-            name: user?.name || donorInfo.name,
-            email: user?.email || donorInfo.email,
-            contact: user?.phoneNumber || donorInfo.phone,
-          },
-          theme: {
-            color: "#003f5c",
-          },
-          modal: {
-            ondismiss: () => {
-              addToast("Payment cancelled.", "info");
-            },
-          },
-        };
-        const rzp = new Razorpay(rzpOptions);
-        rzp.open();
-      } else {
-        throw new Error(orderData.message || "Could not create payment order.");
-      }
-    } catch (err: any) {
-      addToast(err.message || "Donation failed. Please try again.", "error");
-    } finally {
-      setLoading(false);
+        },
+      };
+      
+      const rzp = new Razorpay(rzpOptions);
+      rzp.open();
+    } else {
+      throw new Error(orderData.message || "Could not create payment order.");
     }
-  };
+  } catch (err: any) {
+    console.error("Donation error:", err);
+    addToast(err.message || "Donation failed. Please try again.", "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const platformFee = Math.round(amount * 0.05);
   const gstOnFee = Math.round(platformFee * 0.18);
