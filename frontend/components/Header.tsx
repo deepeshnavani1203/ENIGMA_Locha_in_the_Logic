@@ -7,7 +7,6 @@ import {
   FiUser,
   FiLogOut,
   FiGrid,
-  FiCheckSquare,
   FiBriefcase,
 } from "react-icons/fi";
 import Button from "./Button.tsx";
@@ -18,9 +17,9 @@ import { motion, AnimatePresence } from "framer-motion";
 const NavLinks = () => {
   const baseClass =
     "px-3 py-2 rounded-md text-sm font-medium transition-colors";
-  const activeClass = "text-brand-gold";
+  const activeClass = "text-blue-700";
   const inactiveClass =
-    "text-gray-700 dark:text-gray-200 hover:text-brand-gold dark:hover:text-brand-gold";
+    "text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-600";
 
   return (
     <>
@@ -101,7 +100,6 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-              <FiHeart className="h-8 w-8 text-brand-gold" />
               <span className="text-xl font-bold text-brand-deep-blue dark:text-white font-serif">
                 Sahayak
               </span>
@@ -220,7 +218,7 @@ const Header: React.FC = () => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="bg-gray-100 dark:bg-brand-dark-200 inline-flex items-center justify-center p-2 rounded-md text-brand-deep-blue dark:text-white hover:text-brand-gold focus:outline-none"
+              className="bg-gray-100 dark:bg-brand-dark-200 inline-flex items-center justify-center p-2 rounded-md text-brand-deep-blue dark:text-white hover:text-blue-600 focus:outline-none"
               aria-controls="mobile-menu"
               aria-expanded="false"
             >

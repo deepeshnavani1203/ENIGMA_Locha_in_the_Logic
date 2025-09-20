@@ -257,7 +257,7 @@ const ShareProfilePage: React.FC = () => {
             </Button>
           </div>
           <p className="text-sm text-warm-gray-600 dark:text-gray-400 mt-4">
-            &copy; {new Date().getFullYear()} Donation Hub. All rights reserved.
+            &copy; {new Date().getFullYear()} Sahayak. All rights reserved.
           </p>
         </footer>
       </main>

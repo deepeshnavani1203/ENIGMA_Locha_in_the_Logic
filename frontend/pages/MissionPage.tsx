@@ -36,7 +36,7 @@ const MissionPage: React.FC = () => {
                 Our Mission
               </h2>
               <p className="mt-4 text-base text-gray-600 leading-relaxed">
-                At Donation Hub, our mission is to revolutionize philanthropy by
+                At Sahayak, our mission is to revolutionize philanthropy by
                 creating a transparent and secure platform that empowers donors
                 to make a lasting impact. Founded in 2023, we strive to bridge
                 the gap between generous individuals and impactful causes.
