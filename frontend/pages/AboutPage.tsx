@@ -10,7 +10,7 @@ const AboutPage: React.FC = () => {
         <div className="absolute inset-0 bg-blue-600/30 backdrop-blur-sm"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl animate-fade-in-down">
-            About Donation Hub
+            About Sahayak
           </h1>
           <p
             className="mt-4 text-lg text-blue-100 max-w-2xl mx-auto animate-fade-in-up"
@@ -43,7 +43,7 @@ const AboutPage: React.FC = () => {
                 Our Story
               </h2>
               <p className="mt-4 text-base text-gray-600 leading-relaxed">
-                Founded in 2023, Donation Hub was created to bridge the gap
+                Founded in 2023, Sahayak was created to bridge the gap
                 between generous donors and impactful causes. Our platform
                 leverages technology to ensure transparency, security, and ease
                 in philanthropy.
@@ -110,7 +110,7 @@ const AboutPage: React.FC = () => {
               Commitment to Transparency
             </h2>
             <p className="mt-4 text-base text-gray-600 leading-relaxed">
-              Donation Hub is registered under the Societies Registration Act,
+              Sahayak is registered under the Societies Registration Act,
               1860, with 80G and 12A certifications for tax-deductible
               donations. Our CSR registration enables corporate partnerships.
               All legal documents are publicly accessible for full transparency.
