@@ -27,11 +27,9 @@ const ExplorePage: React.FC = () => {
   useEffect(() => {
     // Initialize GoogleGenAI client
     try {
-      if (process.env.API_KEY) {
-        setAi(new GoogleGenAI({ apiKey: process.env.API_KEY }));
-      }
-    } catch (e) {
-      console.error("Failed to initialize GoogleGenAI", e);
+            setAi(new GoogleGenAI({ apiKey: "AIzaSyBXRukGoHdeId7vKIsYy4pO4-aqQmTfx9E"}));
+    } catch(e) {
+        console.error("Failed to initialize GoogleGenAI", e);
     }
   }, []);
 
