@@ -8,9 +8,6 @@ npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 
-# Environment variables
-.env
-.env.*    # If using multiple env files like .env.production
 
 # Runtime data
 pids/
