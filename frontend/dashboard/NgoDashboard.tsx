@@ -17,7 +17,7 @@ const NgoDashboard: React.FC = () => {
     useEffect(() => {
         const fetchMyCampaigns = async () => {
             try {
-                const data = await apiFetch<{ campaigns: Campaign[] }>('/campaigns/my-campaigns');
+                const data = await getUserCampaigns();
                 setCampaigns(data.campaigns || []);
             } catch (err: any) {
                 setError(err.message || "Failed to fetch campaigns.");

@@ -133,7 +133,24 @@ router.get("/campaigns", authMiddleware(["ngo"]), async (req, res) => {
         res.status(500).json({ message: "Error fetching campaigns", error: error.message });
     }
 });
-
+router.get("/my-campaigns", authMiddleware(["ngo"]), async (req, res) => {
+    try {
+        const userId = req.user._id || req.user.id;
+        const ngo = await NGO.findOne({ userId });
+        if (!ngo) {
+            return res.status(404).json({ message: "NGO profile not found" });
+        }
+        const campaigns = await Campaign.find({ ngoId: ngo._id });
+        res.json({
+            success: true,
+            data: {
+                campaigns: campaigns
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching campaigns", error: error.message });
+    }
+});
 router.put("/campaigns/:id", authMiddleware(["ngo"]), async (req, res) => {
     try {
         const { id } = req.params;

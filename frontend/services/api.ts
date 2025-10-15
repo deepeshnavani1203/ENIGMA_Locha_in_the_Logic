@@ -456,6 +456,7 @@ export const companyAPI = {
 // Donor Endpoints
 export const donorAPI = {
     getDashboard: () => request('/donor/dashboard'),
+    getProfile: () => request('/donor/profile'),
     getDonationHistory: (filters: any) => request('/donor/donations', {
         method: 'POST',
         body: JSON.stringify(filters)

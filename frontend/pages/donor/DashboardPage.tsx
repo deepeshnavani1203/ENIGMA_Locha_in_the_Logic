@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../context/ToastContext';
 import { FiLoader, FiHeart, FiTrendingUp, FiUsers, FiDollarSign } from 'react-icons/fi';
 import StatCard from '../../components/dashboard/StatCard';
 import { Link } from 'react-router-dom';
+import { donorAPI } from '@/services/api';
 
 interface DashboardStats {
     totalDonations: number;
@@ -23,19 +23,14 @@ const DonorDashboardPage: React.FC = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await fetch('/api/donor/dashboard', {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
+                // donorAPI.getDashboard() already returns parsed JSON data
+                const data = await donorAPI.getDashboard();
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    setStats(data.data.stats);
-                } else {
-                    throw new Error('Failed to fetch dashboard stats');
-                }
+                // Assuming the response structure includes a 'data' or 'stats' property
+                // Adjust based on your actual API response structure
+                setStats(data.data?.stats || data.stats || data);
             } catch (error: any) {
+                console.error('Dashboard fetch error:', error);
                 addToast(error.message || 'Failed to load dashboard stats.', 'error');
             } finally {
                 setLoading(false);
